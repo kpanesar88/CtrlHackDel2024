@@ -7,7 +7,7 @@ import {
   Button,
 } from "react-native";
 import React, { useState } from "react";
-import { VoiceInput } from "../components/voiceInput";
+import { SpeechToText } from "../components/voiceInput";
 
 import "../../global.css";
 

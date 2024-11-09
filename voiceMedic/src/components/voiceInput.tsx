@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Button, Text } from 'react-native';
 import { Audio } from 'expo-av';
 
-const SpeechToText: React.FC = () => {
+export const SpeechToText: React.FC = () => {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [text, setText] = useState<string>('');
@@ -88,4 +88,3 @@ const SpeechToText: React.FC = () => {
   );
 };
 
-export default SpeechToText;

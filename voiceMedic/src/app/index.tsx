@@ -1,10 +1,33 @@
-import { View, Text, Pressable, Linking } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  Linking,
+  TextInput,
+  Button,
+} from "react-native";
+import React, { useState } from "react";
 import { VoiceInput } from "../components/voiceInput";
 
 import "../../global.css";
 
 export default function Page() {
+  const [response, setResponse] = useState("");
+  const [inputText, setInputText] = useState("");
+
+  const handleTextReceived = async (text: string): Promise<void> => {
+    setResponse(text);
+    console.log("Text received:", response);
+  };
+
+  const handleTextChange = (text: string) => {
+    setInputText(text);
+  };
+
+  const handleSubmit = () => {
+    console.log("User input:", inputText);
+  };
+
   return (
     <View>
       {/* 911 button */}
@@ -16,7 +39,18 @@ export default function Page() {
 
       {/* Button to talk into the app */}
       <View>
-        <Text>Going to Voice INput or smtg</Text>
+        <VoiceInput onTextReceived={handleTextReceived} />
+      </View>
+
+      {/* TextInput instead */}
+      <View>
+        <Text>What's happening:</Text>
+        <TextInput
+          placeholder="Enter text"
+          value={response}
+          onChangeText={handleTextChange}
+        />
+        <Button title="Submit" onPress={handleSubmit} />
       </View>
     </View>
   );

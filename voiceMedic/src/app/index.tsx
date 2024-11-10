@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Linking, TextInput, StyleSheet,Image } from "react-native";
+import { View, Text, Pressable, Linking, TextInput, StyleSheet, Image } from "react-native";
 import React, { useState } from "react";
 import * as Speech from 'expo-speech';
 //import { SpeechToText } from "../components/voiceInput";  // Assuming the SpeechToText component exists

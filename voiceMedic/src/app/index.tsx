@@ -10,6 +10,8 @@ import {
 import React, { useState } from "react";
 import * as Speech from "expo-speech";
 import { SpeechToText } from "../components/speechToText";
+const { getAnswerFromGPT } = require('../api/aiHandler');  // Import the function from aiHandler.js
+
 //import { SpeechToText } from "../components/voiceInput";  // Assuming the SpeechToText component exists
 
 export default function Page() {
@@ -20,6 +22,8 @@ export default function Page() {
   // Handle text received from speech-to-text
   const handleTextReceived = async (text: string): Promise<void> => {
     setResponse(text);
+    const result = await getAnswerFromGPT(text);
+    setResponse(result);
     console.log("Text received: ", text);
   };
 

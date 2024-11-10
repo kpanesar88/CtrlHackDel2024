@@ -2,61 +2,39 @@
 // const fs = require('fs');
 // const { OpenAI } = require("openai");
 import * as FileSystem from "expo-file-system";
-import axios from "axios";
-import Constants from "expo-constants";
-
-// Initialize OpenAI API client
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY, // Load the API key from the environment variables
-// });
 
 // Path to JSON file
 const fileUri = FileSystem.documentDirectory + "first_aid_responses.json";
 // get api key
 const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
-console.log(apiKey);
 // Function to get answer from GPT
 export const getAnswerFromGPT = async (question) => {
   try {
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          {
-            role: "system",
-            content: "You are a helpful first-aid assistant.",
-          },
-          {
-            role: "user",
-            content: question,
-          },
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: question },
         ],
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-      }
-    );
+      }),
+    });
 
-    // // Making a request to OpenAI's API to get a response
-    // const response = await openai.chat.completions.create({
-    //   model: 'gpt-3.5-turbo',  // You can switch this to another available model
-    //   messages: [
-    //     { role: 'system', content: 'You are a helpful first-aid assistant.' },
-    //     { role: 'user', content: question },
-    //   ],
-    // });
+    if (!response.ok) {
+      throw new Error("Failed to fetch the response from OpenAI");
+    }
 
-    // // The model's answer
-    const answer = response.choices[0].message.content.trim();
-
-    // Save the question and answer to a JSON file
-    saveToJSON(question, answer);
+    // extract data
+    const data = await response.json();
+    const answer = data?.choices?.[0]?.message?.content;
 
     return answer;
+
   } catch (error) {
     console.error("Error getting response from GPT:", error);
     return "Sorry, I couldn't get an answer.";

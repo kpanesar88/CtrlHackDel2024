@@ -7,24 +7,24 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import * as Speech from "expo-speech";
 import { SpeechToText } from "../components/speechToText";
-const { getAnswerFromGPT } = require('../api/aiHandler');  // Import the function from aiHandler.js
+const { getAnswerFromGPT } = require("../api/aiHandler"); // Import the function from aiHandler.js
 
 //import { SpeechToText } from "../components/voiceInput";  // Assuming the SpeechToText component exists
 
 export default function Page() {
-  const [response, setResponse] = useState("");
+  const response = useRef("");
   const [inputText, setInputText] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   // Handle text received from speech-to-text
   const handleTextReceived = async (text: string): Promise<void> => {
-    setResponse(text);
     const result = await getAnswerFromGPT(text);
-    setResponse(result);
-    console.log("Text received: ", text);
+    response.current = result;
+    console.log("Text received: ", result);
+    handlePlaySpeech();
   };
 
   // Handle change in input text
@@ -35,6 +35,8 @@ export default function Page() {
   // Handle form submission
   const handleSubmit = () => {
     console.log("User input:", inputText);
+    response.current = inputText;
+    handlePlaySpeech();
   };
 
   const toggleDropdown = () => {
@@ -43,8 +45,8 @@ export default function Page() {
 
   // Handle speech output
   const handlePlaySpeech = () => {
-    if (inputText.trim() !== "") {
-      Speech.speak(inputText, {
+    if (response.current.trim() !== "") {
+      Speech.speak(response.current, {
         language: "en",
         pitch: 1,
         rate: 1,

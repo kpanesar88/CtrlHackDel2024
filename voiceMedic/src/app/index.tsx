@@ -1,6 +1,7 @@
 import { View, Text, Pressable, Linking, TextInput, StyleSheet, Image } from "react-native";
 import React, { useState } from "react";
 import * as Speech from 'expo-speech';
+import { SpeechToText } from "../hooks/speechToText";
 //import { SpeechToText } from "../components/voiceInput";  // Assuming the SpeechToText component exists
 
 export default function Page() {
@@ -67,7 +68,8 @@ export default function Page() {
       </View>
 
     {/* Push to Talk */}
-    <View style={styles.pushToTalkContainer}>
+    <SpeechToText />
+    {/* <View style={styles.pushToTalkContainer}>
     <Pressable
             onPress={() => Linking.openURL("tel:911")}
             style={styles.pushToTalkButton}
@@ -77,7 +79,7 @@ export default function Page() {
               style={styles.micImage}
             />
             </Pressable>
-    </View>
+    </View> */}
 
     
 

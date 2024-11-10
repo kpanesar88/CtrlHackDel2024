@@ -2,7 +2,7 @@ import {
   ExpoSpeechRecognitionModule,
   useSpeechRecognitionEvent,
 } from "expo-speech-recognition";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -12,17 +12,21 @@ import {
   StyleSheet,
 } from "react-native";
 
-export function SpeechToText() {
+export function SpeechToText({ onTextReceived }: { onTextReceived: (text: string) => void }) {
   const [recognizing, setRecognizing] = useState(false);
   const [transcript, setTranscript] = useState("");
-  if (recognizing === true) {
-    console.log(recognizing);
-  }
+  const finalTranscriptRef = useRef("");
 
   useSpeechRecognitionEvent("start", () => setRecognizing(true));
-  useSpeechRecognitionEvent("end", () => setRecognizing(false));
+  useSpeechRecognitionEvent("end", () => {
+    setRecognizing(false)
+    onTextReceived(finalTranscriptRef.current);
+  });
   useSpeechRecognitionEvent("result", (event) => {
     setTranscript(event.results[0]?.transcript);
+    if (event.isFinal) {
+      finalTranscriptRef.current = event.results[0]?.transcript;
+    }
   });
   useSpeechRecognitionEvent("error", (event) => {
     console.log("error code:", event.error, "error messsage:", event.message);

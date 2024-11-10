@@ -28,7 +28,9 @@
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
     "tailwindcss": "^3.4.14",
-    "voicemedic": "file:"
+    "voicemedic": "file:",
+    "expo-dev-client": "~4.0.29",
+    "expo-build-properties": "~0.12.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

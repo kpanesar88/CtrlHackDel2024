@@ -39,7 +39,7 @@ export default function Page() {
 
       {/* Button to talk into the app */}
       <View>
-        <VoiceInput onTextReceived={handleTextReceived} />
+        <SpeechToText onTextReceived={handleTextReceived} />
       </View>
 
       {/* TextInput instead */}
